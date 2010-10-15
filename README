@@ -1,0 +1,5 @@
+Hello, this is preferences application which can be used to 
+externalize and centralize storing of preferences. It expo-
+es a set of Http apis documented here - 
+http://c/display/pUApp/API+Details
+
