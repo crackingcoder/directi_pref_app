@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL MAP 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Preference">
+
+    <typeAlias alias="preference" type="pw.pref.model.Preference" />    
+
+    <cacheModel id="cache" type="LRU" readOnly="false">
+        <flushInterval hours="24" />
+        <flushOnExecute statement="Preference.insert"/>
+        <flushOnExecute statement="Preference.update"/>
+        <flushOnExecute statement="Preference.delete"/>
+        <property name="cache-size" value="1000" />
+    </cacheModel>
+
+    <select id="find" parameterClass="preference" resultClass="string" cacheModel="cache">
+        SELECT  value
+        FROM    preferences
+        WHERE   app_id = #appId#
+        AND     user_id = #userId#
+        AND     key = #key#
+    </select>
+
+    <select id="findByAppId" parameterClass="preference" resultClass="map" cacheModel="cache">
+        SELECT  key,
+                value
+        FROM    preferences
+        WHERE   app_id = #appId#
+        AND     user_id = #userId#
+    </select>
+
+    <insert id="insert" parameterClass="preference">
+        INSERT
+        INTO    preferences (
+                app_id,
+                user_id,
+                key,
+                value,
+                created_date,
+                last_updated_date
+        )
+        VALUES (
+                #appId#,
+                #userId#,
+                #key#,
+                #value#,
+                NOW(),
+                NOW()
+        )
+    </insert>
+
+    <update id="update" parameterClass="preference">
+        UPDATE  preferences
+        SET     value = #value#,
+                last_updated_date = NOW()
+        WHERE   app_id = #appId#
+        AND     user_id = #userId#
+        AND     key = #key#
+    </update>
+
+    <update id="delete" parameterClass="preference">
+        DELETE
+        FROM    preferences
+        WHERE   app_id = #appId#
+        AND     user_id = #userId#
+        AND     key = #key#
+    </update>
+
+</sqlMap>

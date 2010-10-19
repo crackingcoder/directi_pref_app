@@ -1,73 +1,65 @@
 package pw.pref.api;
 
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertEquals;
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.Matchers.any;
-import org.mockito.Matchers;
+import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import pw.pref.api.helper.ApiResult;
+import pw.pref.api.helper.ApiValidator;
+import pw.pref.api.helper.ApiContext;
+import pw.pref.api.helper.JsonResponseGenerator;
+import pw.pref.exception.PreferenceException;
+import pw.pref.service.AuthService;
+import pw.pref.service.PreferenceService;
+import pw.pref.model.Preference;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import pw.pref.service.PreferenceService;
-import pw.pref.service.AuthService;
-import pw.pref.exception.PreferenceException;
-
-import java.util.Map;
+import java.io.IOException;
+import java.util.List;
 
 public class SetPreferenceControllerTest {
 
     private SetPreferenceController setPreferenceController;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private Object command;
-    private BindException bindException;
     private PreferenceService preferenceService;
     private AuthService authService;
+    private JsonResponseGenerator jsonResponseGenerator;
+    private ApiValidator apiValidator;
 
-    @BeforeTest
-    public void setUp() throws PreferenceException {
-        preferenceService = mock(PreferenceService.class);
-        authService = mock(AuthService.class);
-        this.setPreferenceController = new SetPreferenceController(preferenceService, authService);
+    @BeforeMethod
+    public void setUp() throws PreferenceException, IOException {
+        setUpMocks();
+        this.setPreferenceController = new SetPreferenceController(preferenceService, authService,
+                jsonResponseGenerator, apiValidator);
+    }
+
+    private void setUpMocks() {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
-        command = new Object();
-        bindException = mock(BindException.class);
-        when(authService.authenticateToken((String) Matchers.isNotNull())).thenReturn("user123");
-        when(authService.authenticateToken(null)).thenThrow(new PreferenceException());
+        apiValidator = mock((ApiValidator.class));
+        authService = mock(AuthService.class);
+        preferenceService = mock(PreferenceService.class);
+        jsonResponseGenerator = mock(JsonResponseGenerator.class);
     }
 
     @Test
-    public void setPreference() throws Exception, PreferenceException {
-        when(request.getParameter("key")).thenReturn("send_email");
-        when(request.getParameter("value")).thenReturn("true");
-        when(request.getParameter("app_id")).thenReturn("some_app");
-        when(request.getParameter("auth_token")).thenReturn("authtoken123");
-        ModelAndView view = setPreferenceController.onSubmit(request, response, command, bindException);
-        verify(preferenceService).setPreference("send_email", "true", "some_app", "user123");
-        assertNotNull(view);
-        Map model = view.getModel();
-        assertNotNull(model);
-        assertEquals(model.get("status"),"success");
+    public void setPreferenceAndReturnJsonResponse() throws Exception, PreferenceException {
+        setPreferenceController.handleRequest(request, response);
+        verify(apiValidator).validate(any(ApiContext.class), any(List.class));
+        verify(authService).authenticate(any(ApiContext.class));
+        verify(preferenceService).setPreference(any(Preference.class));
+        verifyJsonResponseGeneratorInteractionAndCaptureApiResult();
     }
 
-    @Test
-    public void setPreferenceThrowsError() throws Exception, PreferenceException {
-        when(request.getParameter("key")).thenReturn("send_email");
-        when(request.getParameter("value")).thenReturn("true");
-        when(request.getParameter("app_id")).thenReturn("some_app");
-        when(request.getParameter("auth_token")).thenReturn(null);
-        ModelAndView view = setPreferenceController.onSubmit(request, response, command, bindException);
-        assertNotNull(view);
-        Map model = view.getModel();
-        assertNotNull(model);
-        assertEquals(model.get("status"),"failure");
+    private void verifyJsonResponseGeneratorInteractionAndCaptureApiResult() throws IOException {
+        ArgumentCaptor<ApiResult> apiResultArgumentCaptor = ArgumentCaptor.forClass(ApiResult.class);
+        verify(jsonResponseGenerator)
+                .generateResponse(any(HttpServletResponse.class), apiResultArgumentCaptor.capture());
+        ApiResult apiResult = apiResultArgumentCaptor.getValue();
+        assertEquals(apiResult.getStatus(), "success");
     }
 }

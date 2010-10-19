@@ -5,10 +5,36 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <context:annotation-config/>
     <context:component-scan base-package="pw"/>
+    <context:property-placeholder
+            location="classpath:database.properties"/>
     <bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
     <bean class="org.springframework.web.servlet.mvc.support.ControllerBeanNameHandlerMapping"/>
     <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-        <!--<property name="prefix" value="/WEB-INF/view/" />-->
-        <!--<property name="suffix" value=".jsp" />-->
+    <!--<property name="prefix" value="/WEB-INF/view/" />-->
+    <!--<property name="suffix" value=".jsp" />-->
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxActive" value="25"/>
+        <property name="maxIdle" value="5"/>
+        <property name="maxWait" value="2000"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:ibatis_config/sql_map_config.xml</value>
+        </property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="useTransactionAwareDataSource" value="true"/>
+    </bean>
     <!--</bean>-->
 </beans>

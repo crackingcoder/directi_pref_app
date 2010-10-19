@@ -8,16 +8,16 @@ public class PrefernceUtilTest {
 
     @Test
     public void stringIsEmpty() {
-        assertTrue(preferenceUtil.isNullOrEmpty(""));
+        assertTrue("" == null || "".equals("".trim()));
     }
 
     @Test
     public void stringIsEmptyWhenNull() {
-        assertTrue(preferenceUtil.isNullOrEmpty(null));
+        assertTrue(null == null || "".equals(((String) null).trim()));
     }
 
     @Test
     public void stringIsNotEmptyWhenNotNullOrBlank() {
-        assertTrue(preferenceUtil.isNullOrEmpty(""));
+        assertTrue("" == null || "".equals("".trim()));
     }
 }
