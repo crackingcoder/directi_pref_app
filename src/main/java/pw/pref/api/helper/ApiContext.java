@@ -15,6 +15,7 @@ public class ApiContext {
     private String userId;
     private String status;
     private String message;
+    private String appKey;
 
     public ApiContext(HttpServletRequest httpServletRequest) {
         this.httpMethod = httpServletRequest.getMethod();
@@ -22,6 +23,8 @@ public class ApiContext {
         this.value = httpServletRequest.getParameter("value");
         this.appId = httpServletRequest.getParameter("app_id");
         this.authToken = httpServletRequest.getParameter("auth_token");
+        this.appKey = httpServletRequest.getParameter("app_key");
+        this.userId = httpServletRequest.getParameter("user_id");
     }
 
     public String getHttpMethod() {
@@ -63,5 +66,13 @@ public class ApiContext {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 }

@@ -42,7 +42,7 @@ public class SetPreferenceController implements Controller {
             authService.authenticate(apiContext);
             apiValidator.validate(apiContext, getSupportedMethods());
             action(apiContext);
-        } catch (PreferenceException pe) {
+        } catch (Exception pe) {
             apiContext.setFailureStatus(pe.getMessage());
         }
         writeResponse(httpServletResponse, apiContext);
