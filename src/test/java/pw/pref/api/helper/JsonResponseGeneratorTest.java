@@ -31,7 +31,7 @@ public class JsonResponseGeneratorTest {
 
         ArgumentCaptor<String> jsonStringCaptor = ArgumentCaptor.forClass(String.class);
         verify(writer).write(jsonStringCaptor.capture());
-        String json = jsonStringCaptor.getValue();
+        String json = jsonStringCaptor.getValue().trim();
         assertEquals(json, "{\"status\":\"" + SUCCESS + "\"}");
     }
 
@@ -42,7 +42,7 @@ public class JsonResponseGeneratorTest {
 
         ArgumentCaptor<String> jsonStringCaptor = ArgumentCaptor.forClass(String.class);
         verify(writer).write(jsonStringCaptor.capture());
-        String json = jsonStringCaptor.getValue();
+        String json = jsonStringCaptor.getValue().trim();
         assertEquals(json, "{\"status\":\"" + FAILURE + "\",\"message\":\"Some error occurred\"}");
     }
 }

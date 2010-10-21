@@ -13,11 +13,8 @@ import java.util.List;
 @Component
 public class PreferenceDao extends SqlMapClientDaoSupport {
 
-    private PreferenceUtil preferenceUtil;
-
     @Autowired
     public PreferenceDao(SqlMapClient sqlMapClient, PreferenceUtil preferenceUtil) {
-        this.preferenceUtil = preferenceUtil;
         setSqlMapClient(sqlMapClient);
     }
 

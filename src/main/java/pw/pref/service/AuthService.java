@@ -2,7 +2,7 @@ package pw.pref.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pw.pref.api.client.RestServiceClient;
+import pw.authentication.api.client.RestServiceClient;
 import pw.authentication.web.api.http.client.ServiceResponse;
 import pw.authentication.model.AuthenticatedUser;
 import pw.pref.api.helper.ApiContext;

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 public class GetAllPreferencesController extends GenericApiController {
     @Override
     protected void action(ApiContext apiContext) throws PreferenceException {
-        List<Preference> preferenceList = preferenceService.getAllPreferences(apiContext);
+        List<Preference> preferenceList = preferenceService.getAllPreferences(apiContext.getPreference());
         apiContext.setData(preferenceList);
         apiContext.setSuccessStatus();
     }

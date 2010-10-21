@@ -39,8 +39,20 @@ public class PreferenceDaoTest {
 
     @Test
     public void updatesWhenExists() throws SQLException {
-        when(sqlMapClientTemplate.queryForObject("Preference.find", preference)).thenReturn("some_value");
+        when(sqlMapClientTemplate.queryForObject("Preference.find", preference)).thenReturn(preference);
         preferenceDao.save(preference);
         verify(sqlMapClientTemplate).update("Preference.update", preference);
+    }
+
+    @Test
+    public void find() throws SQLException {
+        preferenceDao.find(preference);
+        verify(sqlMapClientTemplate).queryForObject("Preference.find", preference);
+    }
+
+    @Test
+    public void findByAppId() throws SQLException {
+        preferenceDao.findByAppId(preference);
+        verify(sqlMapClientTemplate).queryForList("Preference.findByAppId", preference);
     }
 }

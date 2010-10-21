@@ -1,4 +1,4 @@
-package pw.pref.api.client;
+package pw.authentication.api.client;
 
 import com.thoughtworks.xstream.XStream;
 import org.apache.http.HttpResponse;

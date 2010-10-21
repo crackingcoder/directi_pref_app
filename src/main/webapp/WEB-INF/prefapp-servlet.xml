@@ -45,7 +45,7 @@
         <property name="useTransactionAwareDataSource" value="true"/>
     </bean>
 
-    <bean id="httpClientFactory" class="pw.pref.api.client.ThreadSafeHttpClientFactory" init-method="initialize">
+    <bean id="httpClientFactory" class="pw.authentication.api.client.ThreadSafeHttpClientFactory" init-method="initialize">
         <property name="maxTotalConnections" value="100"/>
         <property name="connectionTimeOut" value="60000"/>
         <property name="socketTimeOut" value="60000"/>

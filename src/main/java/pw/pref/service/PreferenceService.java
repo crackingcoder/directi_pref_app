@@ -35,7 +35,7 @@ public class PreferenceService {
         return preferenceDao.find(preference);
     }
 
-    public List<Preference> getAllPreferences(ApiContext apiContext) {
-        return preferenceDao.findByAppId(apiContext.getPreference());
+    public List<Preference> getAllPreferences(Preference preference) {
+        return preferenceDao.findByAppId(preference);
     }
 }

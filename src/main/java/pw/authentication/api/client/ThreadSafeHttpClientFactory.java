@@ -1,4 +1,4 @@
-package pw.pref.api.client;
+package pw.authentication.api.client;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
