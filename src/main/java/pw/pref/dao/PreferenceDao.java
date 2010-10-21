@@ -8,6 +8,7 @@ import pw.pref.model.Preference;
 import pw.pref.util.PreferenceUtil;
 
 import java.util.Map;
+import java.util.List;
 
 @Component
 public class PreferenceDao extends SqlMapClientDaoSupport {
@@ -21,19 +22,20 @@ public class PreferenceDao extends SqlMapClientDaoSupport {
     }
 
     public void save(Preference preference) {
-        if (preferenceUtil.anyOneIsNullOrEmpty(find(preference))) {
+        Preference savedPreference = find(preference);
+        if (savedPreference == null) {
             getSqlMapClientTemplate().insert("Preference.insert", preference);
         } else {
             getSqlMapClientTemplate().update("Preference.update", preference);
         }
     }
 
-    public String find(Preference preference) {
-        return (String) getSqlMapClientTemplate().queryForObject("Preference.find", preference);
+    public Preference find(Preference preference) {
+        return (Preference) getSqlMapClientTemplate().queryForObject("Preference.find", preference);
     }
 
-    public Map<String, String> findByAppId(Preference preference) {
-        return (Map<String, String>) getSqlMapClientTemplate()
-                .queryForMap("Preference.findByAppId", preference, "key", "value");
+    public List<Preference> findByAppId(Preference preference) {
+        return (List<Preference>) getSqlMapClientTemplate()
+                .queryForList("Preference.findByAppId", preference);
     }
 }

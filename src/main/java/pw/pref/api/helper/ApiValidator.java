@@ -22,7 +22,11 @@ public class ApiValidator {
     }
 
     private void validateParameters(ApiContext apiContext) throws PreferenceException {
-        if (preferenceUtil.anyOneIsNullOrEmpty(apiContext.getAppId(), apiContext.getKey(), apiContext.getUserId())) {
+        if (
+                preferenceUtil.isNullOrEmpty(apiContext.getAppId())
+                || (!apiContext.isKeyOptional() && preferenceUtil.isNullOrEmpty(apiContext.getKey()))
+                || (!apiContext.isUserIdOptional() && preferenceUtil.isNullOrEmpty(apiContext.getUserId()))
+        ) {
             throw new PreferenceException("Missing required parameter");
         }
     }

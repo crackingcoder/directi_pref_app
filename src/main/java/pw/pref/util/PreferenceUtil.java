@@ -4,12 +4,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PreferenceUtil {
-    public boolean anyOneIsNullOrEmpty(String... strngs) {
-        for (String str : strngs) {
-            if (str == null || "".equals(str.trim()))
-                return true;
-        }
-        return false;
+    public boolean isNullOrEmpty(String str) {
+        return (str == null || "".equals(str.trim())) ? true : false;
     }
 
 }

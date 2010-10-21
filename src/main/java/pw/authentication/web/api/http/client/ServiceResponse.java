@@ -161,7 +161,7 @@ public class ServiceResponse implements Serializable
 
 	private Exception unknownException()
 	{
-		return Reflection.constructor().withParameterTypes(String.class).in(exceptionClass).newInstance(errorMessage);
+		return Reflection.constructor().withParameterTypes(String.class).in(exceptionClass).newInstance(errorCode);
 	}
 
 	private Exception knownException()

@@ -1,6 +1,7 @@
 package pw.pref.api.helper;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,10 @@ public class JsonResponseGenerator {
     }
 
     private void writeResultAsJson(HttpServletResponse httpServletResponse, ApiResult apiResult) throws IOException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .setPrettyPrinting()
+                .create();
         String json = gson.toJson(apiResult);
         httpServletResponse.getWriter().write(json);
     }

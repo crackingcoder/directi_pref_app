@@ -33,8 +33,11 @@ public class SetPreferenceControllerTest {
     @BeforeMethod
     public void setUp() throws PreferenceException, IOException {
         setUpMocks();
-        this.setPreferenceController = new SetPreferenceController(preferenceService, authService,
-                jsonResponseGenerator, apiValidator);
+        this.setPreferenceController = new SetPreferenceController();
+        this.setPreferenceController.setPreferenceService(preferenceService);
+        this.setPreferenceController.setAuthService(authService);
+        this.setPreferenceController.setJsonResponseGenerator(jsonResponseGenerator);
+        this.setPreferenceController.setApiValidator(apiValidator);
     }
 
     private void setUpMocks() {

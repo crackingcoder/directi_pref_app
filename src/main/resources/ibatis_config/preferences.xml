@@ -13,17 +13,38 @@
         <property name="cache-size" value="1000" />
     </cacheModel>
 
-    <select id="find" parameterClass="preference" resultClass="string" cacheModel="cache">
-        SELECT  value
+    <resultMap id="fullResult" class="preference">
+       <result property="id" column="id" />
+       <result property="userId" column="user_id" />
+       <result property="appId" column="app_id" />
+       <result property="key" column="key" />
+       <result property="value" column="value" />
+       <result property="createdDate" column="created_date" />
+       <result property="lastUpdatedDate" column="last_updated_date" />
+    </resultMap>
+
+    <select id="find" parameterClass="preference" resultMap="fullResult" cacheModel="cache">
+        SELECT  id,
+                app_id,
+                user_id,
+                key,
+                value,
+                created_date,
+                last_updated_date
         FROM    preferences
         WHERE   app_id = #appId#
         AND     user_id = #userId#
         AND     key = #key#
     </select>
 
-    <select id="findByAppId" parameterClass="preference" resultClass="map" cacheModel="cache">
-        SELECT  key,
-                value
+    <select id="findByAppId" parameterClass="preference" resultMap="fullResult" cacheModel="cache">
+        SELECT  id,
+                app_id,
+                user_id,
+                key,
+                value,
+                created_date,
+                last_updated_date
         FROM    preferences
         WHERE   app_id = #appId#
         AND     user_id = #userId#
@@ -47,6 +68,9 @@
                 NOW(),
                 NOW()
         )
+        <selectKey keyProperty="id" resultClass="long" type="pre">
+            SELECT nextval('preferences_id_seq')
+        </selectKey>
     </insert>
 
     <update id="update" parameterClass="preference">

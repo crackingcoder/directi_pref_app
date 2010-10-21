@@ -8,13 +8,18 @@
     <context:property-placeholder
             location="classpath:database.properties"/>
 
-    <!--<import resource="classpath:authentication-services.xml" />-->
-
     <bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
-    <bean class="org.springframework.web.servlet.mvc.support.ControllerBeanNameHandlerMapping"/>
-    <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-    <!--<property name="prefix" value="/WEB-INF/view/" />-->
-    <!--<property name="suffix" value=".jsp" />-->
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <value>
+                /set=setPreferenceController
+                /get=getPreferenceController
+                /get_all=getAllPreferencesController
+                /set_and_notify=setPreferenceController
+            </value>
+        </property>
+    </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driver}"/>
@@ -40,14 +45,15 @@
         <property name="useTransactionAwareDataSource" value="true"/>
     </bean>
 
-	<bean id="httpClientFactory" class="pw.pref.api.client.ThreadSafeHttpClientFactory" init-method="initialize">
-		<property name="maxTotalConnections" value="100" />
-		<property name="connectionTimeOut" value="60000" />
-		<property name="socketTimeOut" value="60000" />
-		<property name="httpPortNumber" value="80" />
-		<property name="httpsPortNumber" value="443" />
-	</bean>
+    <bean id="httpClientFactory" class="pw.pref.api.client.ThreadSafeHttpClientFactory" init-method="initialize">
+        <property name="maxTotalConnections" value="100"/>
+        <property name="connectionTimeOut" value="60000"/>
+        <property name="socketTimeOut" value="60000"/>
+        <property name="httpPortNumber" value="80"/>
+        <property name="httpsPortNumber" value="443"/>
+    </bean>
 
-    <bean id="httpClient" factory-bean="httpClientFactory" factory-method="getHttpClient" depends-on="httpClientFactory" primary="true"/>
-    
+    <bean id="httpClient" factory-bean="httpClientFactory" factory-method="getHttpClient" depends-on="httpClientFactory"
+          primary="true"/>
+
 </beans>

@@ -1,11 +1,23 @@
 package pw.pref.model;
 
+import com.google.gson.annotations.Expose;
+
+import java.util.Date;
+
 public class Preference {
 
+    private long id;
     private String appId;
+    @Expose
     private String key;
+    @Expose
     private String value;
     private String userId;
+    private Date createdDate;
+    private Date lastUpdatedDate;
+
+    public Preference() {
+    }
 
     public Preference(String appId, String key, String value, String userId) {
         this.appId = appId;
@@ -44,5 +56,29 @@ public class Preference {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
     }
 }

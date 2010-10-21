@@ -3,7 +3,6 @@ package pw.pref.api.helper;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import static pw.pref.constants.ApiConstants.FAILURE;
@@ -27,7 +26,7 @@ public class JsonResponseGeneratorTest {
 
     @Test
     public void jsonGenerated() throws IOException {
-        ApiResult apiResult = new ApiResult(SUCCESS, null);
+        ApiResult apiResult = new ApiResult(SUCCESS, null, null);
         jsonResponseGenerator.generateResponse(response, apiResult);
 
         ArgumentCaptor<String> jsonStringCaptor = ArgumentCaptor.forClass(String.class);
@@ -38,7 +37,7 @@ public class JsonResponseGeneratorTest {
 
     @Test
     public void jsonGeneratedWithMessage() throws IOException {
-        ApiResult apiResult = new ApiResult(FAILURE, "Some error occurred");
+        ApiResult apiResult = new ApiResult(FAILURE, "Some error occurred", null);
         jsonResponseGenerator.generateResponse(response, apiResult);
 
         ArgumentCaptor<String> jsonStringCaptor = ArgumentCaptor.forClass(String.class);

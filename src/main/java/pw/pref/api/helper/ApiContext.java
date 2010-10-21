@@ -16,6 +16,9 @@ public class ApiContext {
     private String status;
     private String message;
     private String appKey;
+    private Object data;
+    private boolean userIdOptional;
+    private boolean keyOptional;
 
     public ApiContext(HttpServletRequest httpServletRequest) {
         this.httpMethod = httpServletRequest.getMethod();
@@ -57,7 +60,7 @@ public class ApiContext {
     }
 
     public ApiResult getResult() {
-        return new ApiResult(status, message);
+        return new ApiResult(status, message, data);
     }
 
     public Preference getPreference() {
@@ -74,5 +77,25 @@ public class ApiContext {
 
     public void setAppKey(String appKey) {
         this.appKey = appKey;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public void setUserIdOptional(boolean userIdOptional) {
+        this.userIdOptional = userIdOptional;
+    }
+
+    public boolean isUserIdOptional() {
+        return userIdOptional;
+    }
+
+    public void setKeyOptional(boolean keyOptional) {
+        this.keyOptional = keyOptional;
+    }
+
+    public boolean isKeyOptional() {
+        return keyOptional;
     }
 }

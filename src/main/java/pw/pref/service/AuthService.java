@@ -24,7 +24,7 @@ public class AuthService {
 
     public void authenticate(ApiContext apiContext) throws PreferenceException {
         String authToken = apiContext.getAuthToken();
-        if (preferenceUtil.anyOneIsNullOrEmpty(authToken)) {
+        if (preferenceUtil.isNullOrEmpty(authToken)) {
             if (!isAppKeyValid(apiContext) || !isUserIdValid(apiContext)) {
                 throw new PreferenceException("Authentication failed");
             }

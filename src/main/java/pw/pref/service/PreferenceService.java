@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import pw.pref.dao.PreferenceDao;
 import pw.pref.exception.PreferenceException;
 import pw.pref.model.Preference;
+import pw.pref.api.helper.ApiContext;
+
+import java.util.List;
 
 @Service
 public class PreferenceService {
@@ -28,4 +31,11 @@ public class PreferenceService {
 //    }
 
 
+    public Preference getPreference(Preference preference) {
+        return preferenceDao.find(preference);
+    }
+
+    public List<Preference> getAllPreferences(ApiContext apiContext) {
+        return preferenceDao.findByAppId(apiContext.getPreference());
+    }
 }
