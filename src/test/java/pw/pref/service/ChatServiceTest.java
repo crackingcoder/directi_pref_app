@@ -32,7 +32,7 @@ public class ChatServiceTest {
         when(apiContext.getValue()).thenReturn(VALUE);
         chatService.notifyChatOfNewValue(apiContext);
         verify(restServiceClient)
-                .callRestApi("chatserver.api.pw", "notifyPreferenceChange", ApiConstants.USER_ID_PARAMETER, USERID,
+                .callRestApi(ApiConstants.CHATSERVER_URL, ApiConstants.NOTIFY_PREFERENCE_CHANGE_CONTEXT, ApiConstants.USER_ID_PARAMETER, USERID,
                         "key", KEY, "value", VALUE);
     }
 
