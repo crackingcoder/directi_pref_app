@@ -13,6 +13,7 @@ import pw.pref.api.helper.JsonResponseGenerator;
 import pw.pref.exception.PreferenceException;
 import pw.pref.service.AuthService;
 import pw.pref.service.PreferenceService;
+import pw.pref.service.ChatService;
 import pw.pref.model.Preference;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,8 @@ public class SetPreferenceControllerTest {
     private AuthService authService;
     private JsonResponseGenerator jsonResponseGenerator;
     private ApiValidator apiValidator;
+    private ChatService chatService;
+    private static final String NOTIFY_CHAT_SERVER = "notify_chat_server";
 
     @BeforeMethod
     public void setUp() throws PreferenceException, IOException {
@@ -38,6 +41,7 @@ public class SetPreferenceControllerTest {
         this.setPreferenceController.setAuthService(authService);
         this.setPreferenceController.setJsonResponseGenerator(jsonResponseGenerator);
         this.setPreferenceController.setApiValidator(apiValidator);
+        this.setPreferenceController.setChatService(chatService);
     }
 
     private void setUpMocks() {
@@ -47,10 +51,11 @@ public class SetPreferenceControllerTest {
         authService = mock(AuthService.class);
         preferenceService = mock(PreferenceService.class);
         jsonResponseGenerator = mock(JsonResponseGenerator.class);
+        chatService = mock(ChatService.class);
     }
 
     @Test
-    public void setPreferenceAndReturnJsonResponse() throws Exception, PreferenceException {
+    public void setPreferenceAndReturnJsonResponse() throws Exception {
         setPreferenceController.handleRequest(request, response);
         verify(apiValidator).validate(any(ApiContext.class), any(List.class));
         verify(authService).authenticate(any(ApiContext.class));
@@ -64,5 +69,13 @@ public class SetPreferenceControllerTest {
                 .generateResponse(any(HttpServletResponse.class), apiResultArgumentCaptor.capture());
         ApiResult apiResult = apiResultArgumentCaptor.getValue();
         assertEquals(apiResult.getStatus(), "success");
+    }
+
+    @Test
+    public void notifyChatServer() throws Exception {
+        when(request.getParameter(NOTIFY_CHAT_SERVER)).thenReturn(Boolean.TRUE.toString());
+        setPreferenceController.handleRequest(request, response);
+        verify(request).getParameter(NOTIFY_CHAT_SERVER);
+        verify(chatService).notifyChatOfNewValue(any(ApiContext.class));
     }
 }

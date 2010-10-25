@@ -17,6 +17,7 @@
                 /get=getPreferenceController
                 /get_all=getAllPreferencesController
                 /set_and_notify=setPreferenceController
+                /dummy=dummyController
             </value>
         </property>
     </bean>

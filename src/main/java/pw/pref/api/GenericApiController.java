@@ -13,6 +13,7 @@ import pw.pref.api.helper.JsonResponseGenerator;
 import pw.pref.api.helper.ApiValidator;
 import pw.pref.service.AuthService;
 import pw.pref.service.PreferenceService;
+import pw.pref.service.ChatService;
 import pw.pref.exception.PreferenceException;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public abstract class GenericApiController implements Controller {
     private JsonResponseGenerator jsonResponseGenerator;
     private ApiValidator apiValidator;
     protected PreferenceService preferenceService;
+    protected ChatService chatService;
 
     public ModelAndView handleRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
             throws Exception {
@@ -74,5 +76,10 @@ public abstract class GenericApiController implements Controller {
     @Autowired
     public void setPreferenceService(PreferenceService preferenceService) {
         this.preferenceService = preferenceService;
+    }
+
+    @Autowired
+    public void setChatService(ChatService chatService) {
+        this.chatService = chatService;
     }
 }

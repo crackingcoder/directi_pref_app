@@ -19,6 +19,7 @@ public class ApiContext {
     private Object data;
     private boolean userIdOptional;
     private boolean keyOptional;
+    private boolean notifyChatServer;
 
     public ApiContext(HttpServletRequest httpServletRequest) {
         this.httpMethod = httpServletRequest.getMethod();
@@ -28,6 +29,7 @@ public class ApiContext {
         this.authToken = httpServletRequest.getParameter("auth_token");
         this.appKey = httpServletRequest.getParameter("app_key");
         this.userId = httpServletRequest.getParameter("user_id");
+        this.notifyChatServer = (httpServletRequest.getParameter("notify_chat_server") != null);
     }
 
     public String getHttpMethod() {
@@ -98,4 +100,13 @@ public class ApiContext {
     public boolean isKeyOptional() {
         return keyOptional;
     }
+
+    public boolean isNotifyChatServer() {
+        return notifyChatServer;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
 }
